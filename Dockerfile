@@ -1,14 +1,15 @@
+
+# Use the official Python image from DockerHub as the base image
 FROM python:3.12-slim-bullseye
 
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY requirements.txt .
+# Copy the requirements.txt file and install dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN useradd -m myuser && pip install --no-cache-dir -r requirements.txt && \
-    mkdir logs qr_codes && chown myuser:myuser logs qr_codes
-
-USER myuser
+COPY . .
 
 ENTRYPOINT ["python", "main.py"]
-
-CMD ["--url", "https://hub.docker.com/repository/docker/tdeans/qr-generator/general"]
+CMD ["--url","https://hub.docker.com/repository/docker/tdeans/qr-generator/general"]
